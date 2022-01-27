@@ -5,8 +5,23 @@ controller:
   service:
     externalTrafficPolicy: "Local"
     annotations:
-      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
+      # AWS Load Balancer Controller Annotations
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp # or 'ssl'
+      service.beta.kubernetes.io/aws-load-balancer-attributes: load_balancing.cross_zone.enabled=true
       service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '60'
-      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
-      service.beta.kubernetes.io/aws-load-balancer-internal: "false"
-      service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+      service.beta.kubernetes.io/aws-load-balancer-type: 'external'
+      service.beta.kubernetes.io/aws-load-balancer-scheme: 'internet-facing' # or 'internal'
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: 'ip'
+
+      # SSL Annotations
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: ${ssl_cert_arn}
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: 'https'
+      
+      # External DNS Annotations
+      external-dns.alpha.kubernetes.io/hostname: ${hostname}
+
+    targetPorts:
+        http: 80
+        https: http
+      
+          

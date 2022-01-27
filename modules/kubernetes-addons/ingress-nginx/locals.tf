@@ -1,5 +1,10 @@
 
 locals {
+  default_helm_values = [templatefile("${path.module}/values.yaml", {
+    hostname     = var.hostname
+    ssl_cert_arn = data.aws_acm_certificate.issued.arn
+  })]
+
   name                 = "ingress-nginx"
   service_account_name = "${local.name}-sa"
   namespace            = "nginx"
@@ -74,5 +79,8 @@ locals {
   argocd_gitops_config = {
     enable             = true
     serviceAccountName = local.service_account_name
+    enable     = true
+    hostname   = var.hostname
+    sslCertArn = data.aws_acm_certificate.issued.arn
   }
 }

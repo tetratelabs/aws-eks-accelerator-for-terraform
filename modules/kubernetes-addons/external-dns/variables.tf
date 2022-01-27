@@ -19,13 +19,7 @@
 variable "helm_config" {
   type        = any
   default     = {}
-  description = "Ingress NGINX Helm Configuration"
-}
-
-variable "manage_via_gitops" {
-  type        = bool
-  default     = false
-  description = "Determines if the add-on should be managed via GitOps."
+  description = "External DNS Helm Configuration"
 }
 
 variable "eks_cluster_id" {
@@ -33,32 +27,29 @@ variable "eks_cluster_id" {
   description = "EKS cluster Id"
 }
 
+variable "domain_name" {
+  type        = string
+  description = "Domain name of the Route53 hosted zone to use with External DNS."
+}
+
 variable "tags" {
   type        = map(string)
   description = "Common Tags for AWS resources"
-  default     = null
 }
 
 variable "irsa_policies" {
   type        = list(string)
-  description = "Additional IAM policies for a IAM role for service accounts"
-  default     = []
+  description = "Additional IAM policies used for the add-on service account."
 }
 
-variable "irsa_iam_permissions_boundary" {
+variable "iam_role_path" {
   type        = string
-  default     = ""
-  description = "IAM Policy ARN for IRSA IAM role permissions boundary"
+  default     = "/"
+  description = "IAM role path"
 }
 
-variable "acm_domain" {
-  type        = string
-  default     = ""
-  description = "Domain used to lookup an ACM certificate used for TLS termination."
-}
-
-variable "hostname" {
-  type        = string
-  default     = ""
-  description = "Hostname for the cluster. Used for External DNS annotations."
+variable "manage_via_gitops" {
+  type        = bool
+  default     = false
+  description = "Determines if the add-on should be managed via GitOps."
 }

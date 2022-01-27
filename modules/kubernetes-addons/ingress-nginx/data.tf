@@ -1,3 +1,6 @@
+data "aws_acm_certificate" "issued" {
+  domain   = var.acm_domain
+  statuses = ["ISSUED"]
 data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {}

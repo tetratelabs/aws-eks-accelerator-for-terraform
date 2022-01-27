@@ -3,6 +3,24 @@ variable "eks_cluster_id" {
   type        = string
 }
 
+variable "cluster_domain" {
+  description = "EKS Cluster Id"
+  default     = ""
+  type        = string
+}
+
+variable "cluster_subdomain" {
+  description = "EKS Cluster Id"
+  default     = ""
+  type        = string
+}
+
+variable "acm_domain" {
+  description = "EKS Cluster Id"
+  default     = ""
+  type        = string
+}
+
 variable "eks_worker_security_group_id" {
   description = "EKS Worker Security group Id created by EKS module"
   default     = ""

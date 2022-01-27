@@ -11,7 +11,7 @@ locals {
     chart                      = "external-dns"
     description                = "External DNS Helm Chart deployment configuration.s"
     repository                 = "https://charts.bitnami.com/bitnami"
-    version                    = "5.1.3"
+    version                    = "5.5.0"
     namespace                  = local.namespace
     timeout                    = "1200"
     create_namespace           = true

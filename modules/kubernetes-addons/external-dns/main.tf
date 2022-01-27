@@ -76,9 +76,8 @@ resource "helm_release" "external_dns" {
   }
 }
 
-
 //-------------------------------------
-// IAM Role for Service Accounts
+// IRSA
 //-------------------------------------
 
 module "irsa" {

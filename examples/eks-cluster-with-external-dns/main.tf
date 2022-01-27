@@ -67,26 +67,6 @@ locals {
   eks_cluster_id = join("-", [local.tenant, local.environment, local.zone, "eks"])
 
   terraform_version = "Terraform v1.0.1"
-
-  #---------------------------------------------------------------
-  # ARGOCD ADD-ON APPLICATION
-  #---------------------------------------------------------------
-
-  addon_application = {
-    path               = "chart"
-    repo_url           = "https://github.com/aws-samples/ssp-eks-add-ons.git"
-    add_on_application = true
-  }
-
-  #---------------------------------------------------------------
-  # ARGOCD WORKLOAD APPLICATION
-  #---------------------------------------------------------------
-
-  workload_application = {
-    path               = "envs/dev"
-    repo_url           = "https://github.com/aws-samples/ssp-eks-workloads.git"
-    add_on_application = false
-  }
 }
 
 #---------------------------------------------------------------

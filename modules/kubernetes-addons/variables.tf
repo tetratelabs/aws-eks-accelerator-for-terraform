@@ -366,6 +366,31 @@ variable "argocd_manage_add_ons" {
   description = "Enable managing add-on configuration via ArgoCD"
 }
 
+#-----------Argo Rollouts ADDON-------------
+variable "enable_argo_rollouts" {
+  type        = bool
+  default     = false
+  description = "Enable Argo Rollouts add-on"
+}
+
+variable "argo_rollouts_helm_config" {
+  type        = any
+  default     = null
+  description = "Argo Rollouts Helm Chart config"
+}
+
+variable "argo_rollouts_irsa_permissions_boundary" {
+  type        = string
+  default     = ""
+  description = "IAM Policy ARN for IRSA IAM role permissions boundary"
+}
+
+variable "argo_rollouts_irsa_policies" {
+  type        = list(string)
+  default     = []
+  description = "IAM policy ARNs for Argo Rollouts IRSA"
+}
+
 #-----------AWS NODE TERMINATION HANDLER-------------
 variable "enable_aws_node_termination_handler" {
   type        = bool
@@ -428,6 +453,31 @@ variable "keda_irsa_policies" {
   default     = []
 }
 
+#-----------Kube State Metrics ADDON-------------
+variable "enable_kube_state_metrics" {
+  type        = bool
+  default     = false
+  description = "Enable Kube State Metrics add-on"
+}
+
+variable "kube_state_metrics_helm_config" {
+  type        = any
+  default     = null
+  description = "Kube State Metrics Helm Chart config"
+}
+
+variable "kube_state_metrics_irsa_policies" {
+  type        = list(string)
+  default     = []
+  description = "IAM policy ARNs for Kube State Metrics IRSA"
+}
+
+variable "kube_state_metrics_irsa_permissions_boundary" {
+  type        = string
+  default     = ""
+  description = "IAM Policy ARN for IRSA IAM role permissions boundary"
+}
+
 #-----------Vertical Pod Autoscaler(VPA) ADDON-------------
 variable "enable_vpa" {
   type        = bool
@@ -452,54 +502,4 @@ variable "yunikorn_helm_config" {
   type        = any
   default     = {}
   description = "YuniKorn K8s scheduler Helm Chart config"
-}
-
-#-----------Argo Rollouts ADDON-------------
-variable "enable_argo_rollouts" {
-  type        = bool
-  default     = false
-  description = "Enable Argo Rollouts add-on"
-}
-
-variable "argo_rollouts_helm_config" {
-  type        = any
-  default     = null
-  description = "Argo Rollouts Helm Chart config"
-}
-
-variable "argo_rollouts_irsa_permissions_boundary" {
-  type        = string
-  default     = ""
-  description = "IAM Policy ARN for IRSA IAM role permissions boundary"
-}
-
-variable "argo_rollouts_irsa_policies" {
-  type        = list(string)
-  default     = []
-  description = "IAM policy ARNs for Argo Rollouts IRSA"
-}
-
-#-----------Kube State Metrics ADDON-------------
-variable "enable_kube_state_metrics" {
-  type        = bool
-  default     = false
-  description = "Enable Kube State Metrics add-on"
-}
-
-variable "kube_state_metrics_helm_config" {
-  type        = any
-  default     = null
-  description = "Kube State Metrics Helm Chart config"
-}
-
-variable "kube_state_metrics_irsa_policies" {
-  type        = list(string)
-  default     = []
-  description = "IAM policy ARNs for Kube State Metrics IRSA"
-}
-
-variable "kube_state_metrics_irsa_permissions_boundary" {
-  type        = string
-  default     = ""
-  description = "IAM Policy ARN for IRSA IAM role permissions boundary"
 }

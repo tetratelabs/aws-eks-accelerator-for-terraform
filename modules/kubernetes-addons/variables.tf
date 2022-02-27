@@ -9,18 +9,6 @@ variable "eks_cluster_domain" {
   type        = string
 }
 
-variable "eks_cluster_subdomain" {
-  description = "The subdomain for the EKS cluster."
-  default     = ""
-  type        = string
-}
-
-variable "acm_domain" {
-  description = "EKS Cluster Id"
-  default     = ""
-  type        = string
-}
-
 variable "eks_worker_security_group_id" {
   description = "EKS Worker Security group Id created by EKS module"
   default     = ""

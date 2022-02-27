@@ -147,7 +147,7 @@ module "kubernetes-addons" {
   eks_cluster_id = module.aws-eks-accelerator-for-terraform.eks_cluster_id
 
   # Domain for the cluster - to be used with External DNS.
-  cluster_domain = local.eks_cluster_domain
+  eks_cluster_domain = local.eks_cluster_domain
 
   #---------------------------------------------------------------
   # ADD-ONS

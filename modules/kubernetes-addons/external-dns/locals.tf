@@ -1,47 +1,23 @@
-
 locals {
-  namespace            = "external-dns"
-  service_account_name = "external-dns-sa"
+  name                 = "external-dns"
+  service_account_name = "${local.name}-sa"
+  zone_filter_ids      = jsonencode([data.aws_route53_zone.selected.zone_id])
 
-  zone_filter_arns = [data.aws_route53_zone.selected.arn]
-  zone_filter_ids  = [data.aws_route53_zone.selected.zone_id]
+  default_helm_values = [templatefile("${path.module}/values.yaml", {
+    aws_region           = data.aws_region.current.name
+    zone_filter_ids      = local.zone_filter_ids
+    service_account_name = local.service_account_name
+  })]
 
   default_helm_config = {
-    name                       = "external-dns"
-    chart                      = "external-dns"
-    description                = "External DNS Helm Chart deployment configuration.s"
-    repository                 = "https://charts.bitnami.com/bitnami"
-    version                    = "5.5.0"
-    namespace                  = local.namespace
-    timeout                    = "1200"
-    create_namespace           = true
-    values                     = local.default_helm_values
-    set                        = []
-    set_sensitive              = null
-    lint                       = true
-    wait                       = true
-    wait_for_jobs              = false
-    verify                     = false
-    keyring                    = ""
-    repository_key_file        = ""
-    repository_cert_file       = ""
-    repository_ca_file         = ""
-    repository_username        = ""
-    repository_password        = ""
-    disable_webhooks           = false
-    reuse_values               = false
-    reset_values               = false
-    force_update               = false
-    recreate_pods              = false
-    cleanup_on_fail            = false
-    max_history                = 0
-    atomic                     = false
-    skip_crds                  = false
-    render_subchart_notes      = true
-    disable_openapi_validation = false
-    dependency_update          = false
-    replace                    = false
-    postrender                 = ""
+    description = "Argo Rollouts AddOn Helm Chart"
+    name        = local.name
+    chart       = local.name
+    repository  = "https://charts.bitnami.com/bitnami"
+    version     = "5.5.0"
+    namespace   = local.name
+    values      = local.default_helm_values
+    timeout     = "1200"
   }
 
   helm_config = merge(
@@ -49,15 +25,32 @@ locals {
     var.helm_config
   )
 
-  default_helm_values = [templatefile("${path.module}/values.yaml", {
-    aws_region           = data.aws_region.current.name
-    zone_filter_ids      = jsonencode(local.zone_filter_ids)
-    service_account_name = local.service_account_name
-  })]
-
   argocd_gitops_config = {
     enable            = true
-    zoneFilterIds     = jsonencode(local.zone_filter_ids)
+    zoneFilterIds     = local.zone_filter_ids
     serviceAccontName = local.service_account_name
   }
+
+  irsa_config = {
+    kubernetes_namespace              = local.name
+    kubernetes_service_account        = local.service_account_name
+    create_kubernetes_namespace       = true
+    create_kubernetes_service_account = true
+    iam_role_path                     = "/"
+    eks_cluster_id                    = var.eks_cluster_id
+    irsa_iam_policies                 = concat([aws_iam_policy.external_dns.arn], var.irsa_policies)
+    irsa_iam_permissions_boundary     = var.irsa_iam_permissions_boundary
+    tags                              = var.tags
+  }
+
+  set_values = [
+    {
+      name  = "serviceAccount.name"
+      value = local.service_account_name
+    },
+    {
+      name  = "serviceAccount.create"
+      value = false
+    }
+  ]
 }

@@ -7,7 +7,7 @@ data "aws_route53_zone" "selected" {
 data "aws_iam_policy_document" "external_dns_iam_policy_document" {
   statement {
     effect    = "Allow"
-    resources = local.zone_filter_arns
+    resources = [data.aws_route53_zone.selected.arn]
     actions = [
       "route53:ChangeResourceRecordSets",
       "route53:ListResourceRecordSets"

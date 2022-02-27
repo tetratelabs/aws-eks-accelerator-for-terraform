@@ -50,15 +50,3 @@ variable "irsa_iam_permissions_boundary" {
   default     = ""
   description = "IAM Policy ARN for IRSA IAM role permissions boundary"
 }
-
-variable "acm_domain" {
-  type        = string
-  default     = ""
-  description = "Domain used to lookup an ACM certificate used for TLS termination."
-}
-
-variable "hostname" {
-  type        = string
-  default     = ""
-  description = "Hostname for the cluster. Used for External DNS annotations."
-}

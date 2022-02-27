@@ -144,7 +144,7 @@ module "external_dns" {
   eks_cluster_id    = var.eks_cluster_id
   helm_config       = var.external_dns_helm_config
   irsa_policies     = var.external_dns_irsa_policies
-  domain_name       = var.cluster_domain
+  domain_name       = var.eks_cluster_domain
   tags              = var.tags
   manage_via_gitops = var.argocd_manage_add_ons
 }
@@ -164,12 +164,6 @@ module "ingress_nginx" {
   eks_cluster_id                = var.eks_cluster_id
   irsa_policies                 = var.nginx_irsa_policies
   irsa_iam_permissions_boundary = var.nginx_ingress_controller_irsa_permissions_boundary
-  count             = var.enable_ingress_nginx ? 1 : 0
-  source            = "./ingress-nginx"
-  helm_config       = var.ingress_nginx_helm_config
-  acm_domain        = var.acm_domain
-  hostname          = var.cluster_subdomain
-  manage_via_gitops = var.argocd_manage_add_ons
 }
 
 module "karpenter" {

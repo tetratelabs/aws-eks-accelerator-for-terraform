@@ -7,9 +7,9 @@ locals {
     chart                      = "cert-manager"
     repository                 = "https://charts.jetstack.io"
     version                    = "v1.6.1"
-    namespace                  = "kube-system"
+    namespace                  = "cert-manager"
     timeout                    = "600"
-    create_namespace           = false
+    create_namespace           = true
     set                        = []
     set_sensitive              = null
     lint                       = false

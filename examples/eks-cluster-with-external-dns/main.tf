@@ -66,6 +66,10 @@ locals {
   vpc_name       = join("-", [local.tenant, local.environment, local.zone, "vpc"])
   eks_cluster_id = join("-", [local.tenant, local.environment, local.zone, "eks"])
 
+  eks_cluster_domain    = "<cluster_domain>"
+  eks_cluster_subdomain = "<cluster_subdomain>"
+  acm_domain            = "<acm_domain"
+
   terraform_version = "Terraform v1.0.1"
 }
 
@@ -124,12 +128,11 @@ module "aws-eks-accelerator-for-terraform" {
   managed_node_groups = {
     mg_4 = {
       node_group_name = "managed-ondemand"
-      instance_types  = ["m4.large"]
+      instance_types  = ["m5.large"]
       subnet_ids      = module.aws_vpc.private_subnets
-
-      desired_size = "5"
-      max_size     = "10"
-      min_size     = "3"
+      desired_size    = "5"
+      max_size        = "10"
+      min_size        = "3"
     }
   }
 }
@@ -141,17 +144,30 @@ module "kubernetes-addons" {
   # Globals
   #---------------------------------------------------------------
 
-  eks_cluster_id    = module.aws-eks-accelerator-for-terraform.eks_cluster_id
-  cluster_domain    = "<cluster_domain>"
-  cluster_subdomain = "<cluster_sumdomain>"
-  acm_domain        = "<acm_domain>"
+  eks_cluster_id = module.aws-eks-accelerator-for-terraform.eks_cluster_id
+
+  # Domain for the cluster - to be used with External DNS.
+  cluster_domain = local.eks_cluster_domain
 
   #---------------------------------------------------------------
   # ADD-ONS
   #---------------------------------------------------------------
 
-  enable_ingress_nginx = true
-  enable_cert_manager  = true
+  enable_aws_load_balancer_controller = true
+  enable_cert_manager                 = true
+  enable_external_dns                 = true
+  enable_ingress_nginx                = true
+  ingress_nginx_helm_config = {
+    values = [templatefile("${path.module}/nginx-values.yaml", {
+      hostname     = local.eks_cluster_subdomain
+      ssl_cert_arn = data.aws_acm_certificate.issued.arn
+    })]
+  }
 
   depends_on = [module.aws-eks-accelerator-for-terraform.managed_node_groups]
+}
+
+data "aws_acm_certificate" "issued" {
+  domain   = var.acm_domain
+  statuses = ["ISSUED"]
 }

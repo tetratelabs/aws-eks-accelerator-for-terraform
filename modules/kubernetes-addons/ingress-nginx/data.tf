@@ -1,6 +1,3 @@
-data "aws_acm_certificate" "issued" {
-  domain   = var.acm_domain
-  statuses = ["ISSUED"]
 data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {}
@@ -71,7 +68,7 @@ data "aws_iam_policy_document" "this" {
     condition {
       test     = "StringEquals"
       variable = "aws:ResourceTag/kubernetes.io/service-name"
-      values   = ["${local.namespace}/ingress-nginx-controller"]
+      values   = ["${local.name}/ingress-nginx-controller"]
     }
   }
 
@@ -93,7 +90,7 @@ data "aws_iam_policy_document" "this" {
     condition {
       test     = "StringEquals"
       variable = "aws:RequestTag/kubernetes.io/service-name"
-      values   = ["${local.namespace}/ingress-nginx-controller"]
+      values   = ["${local.name}/ingress-nginx-controller"]
     }
   }
 }

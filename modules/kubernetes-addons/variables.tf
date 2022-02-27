@@ -3,14 +3,14 @@ variable "eks_cluster_id" {
   type        = string
 }
 
-variable "cluster_domain" {
-  description = "EKS Cluster Id"
+variable "eks_cluster_domain" {
+  description = "The domain for the EKS cluster."
   default     = ""
   type        = string
 }
 
-variable "cluster_subdomain" {
-  description = "EKS Cluster Id"
+variable "eks_cluster_subdomain" {
+  description = "The subdomain for the EKS cluster."
   default     = ""
   type        = string
 }
@@ -130,6 +130,25 @@ variable "crossplane_provider_aws" {
     provider_aws_version     = "v0.23.0"
     additional_irsa_policies = []
   }
+}
+
+#-----------External DNS ADDON-------------
+variable "enable_external_dns" {
+  type        = bool
+  default     = false
+  description = "External DNS add-on."
+}
+
+variable "external_dns_helm_config" {
+  type        = any
+  default     = {}
+  description = "External DNS Helm Chart config"
+}
+
+variable "external_dns_irsa_policies" {
+  type        = list(string)
+  description = "Additional IAM policies for a IAM role for service accounts"
+  default     = []
 }
 
 #-----------Amazon Managed Service for Prometheus-------------

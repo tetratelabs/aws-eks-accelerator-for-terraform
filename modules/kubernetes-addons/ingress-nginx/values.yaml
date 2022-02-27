@@ -12,16 +12,5 @@ controller:
       service.beta.kubernetes.io/aws-load-balancer-type: 'external'
       service.beta.kubernetes.io/aws-load-balancer-scheme: 'internet-facing' # or 'internal'
       service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: 'ip'
-
-      # SSL Annotations
-      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: ${ssl_cert_arn}
-      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: 'https'
-      
-      # External DNS Annotations
-      external-dns.alpha.kubernetes.io/hostname: ${hostname}
-
-    targetPorts:
-        http: 80
-        https: http
       
           
